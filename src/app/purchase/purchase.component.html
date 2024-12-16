@@ -1,0 +1,56 @@
+<div class="purchase-container">
+    <h1>Purchase Tickets</h1>
+
+    <div *ngIf="reservations.length > 0" class="results">
+      <h2>Your Reservations</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Reservation ID</th>
+            <th>Flight ID</th>
+            <th>Seats Reserved</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of reservations">
+            <td>{{ reservation.id }}</td>
+            <td>{{ reservation.flight_id }}</td>
+            <td>{{ reservation.seats_reserved }}</td>
+            <td>{{ reservation.total_price | currency }}</td>
+            <td>{{ reservation.status }}</td>
+            <td>
+              <input
+                type="radio"
+                name="selectedReservation"
+                [value]="reservation.id"
+                [(ngModel)]="selectedReservationId"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group" *ngIf="selectedReservationId">
+      <label for="deliveryMethod">Select Delivery Method:</label>
+      <select id="deliveryMethod" [(ngModel)]="deliveryMethod">
+        <option value="" disabled>Select method</option>
+        <option value="email">Email</option>
+        <option value="counter">Counter</option>
+      </select>
+    </div>
+  
+
+    <div *ngIf="successMessage" class="success">{{ successMessage}}</div>
+    <div *ngIf="errorMessage" class="error">{{errorMessage}}</div>
+
+    <div class="buttons">
+      <button (click)="makePurchase()" [disabled]="!selectedReservationId||!deliveryMethod">
+        Confirm Purchase
+      </button>
+    </div>
+  </div>
+  

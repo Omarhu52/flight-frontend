@@ -1,0 +1,71 @@
+<div class="reservation-container">
+  <h1>Available Flights</h1>
+
+  <div class="results">
+    <table>
+      <thead>
+        <tr>
+          <th>Airline</th>
+          <th>Origin</th>
+          <th>Destination</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Price</th>
+          <th>Seats</th>
+          <th>Select</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let flight of flights">
+          <td>{{ flight.airline }}</td>
+          <td>{{ flight.origin_city }}</td>
+          <td>{{ flight.destination_city }}</td>
+          <td>{{ flight.departure_time }}</td>
+          <td>{{ flight.arrival_time }}</td>
+          <td>{{ flight.price | currency }}</td>
+          <td>{{ flight.available_seats }}</td>
+          <td>
+            <input
+              type="radio"
+              name="selectedFlight"
+              [value]="flight.id"
+              [(ngModel)]="selectedFlightId"
+              (change)="calculateTotalPrice()"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-group" *ngIf="selectedFlightId">
+    <label for="seats">Seats to Reserve:</label>
+    <input
+      type="number"
+      id="seats"
+      [(ngModel)]="seatsReserved"
+      (input)="calculateTotalPrice()"
+      min="1"
+    />
+  </div>
+  <div *ngIf="totalPrice > 0" class="total-price">
+    <strong>Total Price:</strong> ${{ totalPrice | currency }}
+  </div>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+
+  <div class="buttons">
+    <button (click)="makeReservation()" [disabled]="!selectedFlightId || seatsReserved <= 0">
+      Confirm Reservation
+    </button>
+  </div>
+
+  <div *ngIf="showConfirmation" class="modal-overlay">
+    <div class="modal">
+      <h2>Are you sure you want to make another reservation?</h2>
+      <button (click)="handleConfirmation(true)">Yes</button>
+      <button (click)="handleConfirmation(false)">No</button>
+    </div>
+  </div>
+</div>

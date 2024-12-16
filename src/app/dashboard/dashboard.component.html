@@ -1,0 +1,13 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Welcome, {{ userEmail }}!</h1>
+    <button class="btn btn-danger logout-btn" (click)="logout()">Logout</button>
+  </div>
+  <p>Select an activity to continue:</p>
+
+  <div class="activity-buttons">
+    <button class="btn btn-primary" (click)="navigateTo('flights')">Consult Flights</button>
+    <button class="btn btn-secondary" (click)="navigateTo('reservations')">Make a Reservation</button>
+    <button class="btn btn-success" (click)="navigateTo('purchase')">Buy Tickets</button>
+  </div>
+</div>

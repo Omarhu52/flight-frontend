@@ -1,0 +1,100 @@
+<div class="flights-container">
+    <h1>Flight Search</h1>
+  
+    <div class="buttons">
+      <button (click)="showOptions()">Select Search Type</button>
+    </div>
+    <div *ngIf="showModal" class="modal-overlay">
+      <div class="modal">
+        <h2>Select Search Type</h2>
+        <button (click)="selectOption('schedule')">By Schedule</button>
+        <button (click)="selectOption('price')">By Price</button>
+        <button (click)="selectOption('status')">By Status</button>
+        <button (click)="closeModal()">Cancel</button>
+      </div>
+    </div>
+  
+
+
+    <div *ngIf="selectedOption === 'status'" class="filters">
+      <div class="form-group">
+        <label>Origin City:</label>
+        <select [(ngModel)]="origin">
+          <option value="">All</option>
+          <option *ngFor="let city of originCities" [value]="city">{{ city }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Destination City:</label>
+        <select [(ngModel)]="destination">
+          <option value="">All</option>
+          <option *ngFor="let city of destinationCities" [value]="city">{{ city }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Airline:</label>
+        <select [(ngModel)]="airline">
+          <option value="">All</option>
+          <option *ngFor="let air of airlines" [value]="air">{{ air }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Seat Category:</label>
+        <select [(ngModel)]="seatCategory">
+          <option value="">All</option>
+          <option *ngFor="let category of seatCategories" [value]="category">{{ category }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Date:</label>
+        <select [(ngModel)]="flightDate">
+          <option value="">All</option>
+          <option *ngFor="let date of availableDates" [value]="date">{{ date }}</option>
+        </select>
+      </div>
+    </div>
+  
+
+    <div *ngIf="selectedOption === 'status'" class="buttons">
+      <button (click)="searchByStatus()">Search by Status</button>
+    </div>
+  
+    <div *ngIf="flights.length > 0" class="results">
+      <h2>
+        {{ selectedOption === 'schedule' ? 'Flight Schedules' : 
+           selectedOption === 'price' ? 'Flight Prices' : 
+           selectedOption === 'status' ? 'Flight Information' : '' }}
+      </h2>
+      <table>
+        <thead>
+          <tr>
+            <th *ngIf="selectedOption !== 'price'">Airline</th>
+            <th>Origin City</th>
+            <th>Destination City</th>
+            <th *ngIf="selectedOption === 'schedule'">Departure Time</th>
+            <th *ngIf="selectedOption === 'schedule'">Arrival Time</th>
+            <th *ngIf="selectedOption === 'price'">Price</th>
+            <th *ngIf="selectedOption === 'status'">Available Seats</th>
+            <th *ngIf="selectedOption === 'status'">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let flight of flights">
+            <td *ngIf="selectedOption !== 'price'">{{ flight.airline }}</td>
+            <td>{{ flight.origin_city }}</td>
+            <td>{{ flight.destination_city }}</td>
+            <td *ngIf="selectedOption === 'schedule'">{{ flight.departure_time }}</td>
+            <td *ngIf="selectedOption === 'schedule'">{{ flight.arrival_time }}</td>
+            <td *ngIf="selectedOption === 'price'">{{ flight.price | currency }}</td>
+            <td *ngIf="selectedOption === 'status'">{{ flight.available_seats }}</td>
+            <td *ngIf="selectedOption === 'status'">{{ flight.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
